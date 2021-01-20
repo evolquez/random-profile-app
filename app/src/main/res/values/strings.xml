@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Random Profile</string>
     <string name="saved_users">Saved users</string>
-    <string name="profiles">Profiles</string>
+    <string name="profilesResponse">Profiles</string>
 </resources>
