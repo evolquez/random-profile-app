@@ -9,9 +9,6 @@ import com.example.randomprofile.entity.Profile;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
-import rx.Completable;
-
 @Dao
 public interface ProfileDao {
 
@@ -19,7 +16,7 @@ public interface ProfileDao {
     List<Profile> getAll();
 
     @Query("SELECT * FROM profile WHERE id LIKE :id")
-    Maybe<Profile> findById(String id);
+    Profile findById(String id);
 
     @Insert
     void insert(Profile profile);

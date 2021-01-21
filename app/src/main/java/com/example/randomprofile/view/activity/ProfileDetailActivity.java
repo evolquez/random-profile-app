@@ -22,13 +22,7 @@ import com.example.randomprofile.databinding.ActivityProfileDetailBinding;
 import com.example.randomprofile.entity.Profile;
 import com.squareup.picasso.Picasso;
 
-import org.reactivestreams.Subscription;
-
 import java.util.Locale;
-
-import io.reactivex.FlowableSubscriber;
-import io.reactivex.observers.DisposableMaybeObserver;
-import rx.Subscriber;
 
 public class ProfileDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,6 +32,7 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
     private ProgressBar loadingIndicator;
     private ImageView favButton;
     private Profile profile;
+    private Profile profileSaved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,42 +96,32 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
     protected void onResume() {
         super.onResume();
         verify();
-
     }
 
     /*Verify if the displayed profile is saved on local database*/
     private void verify() {
         toggleLoading();
 
-        profileDao.findById(this.profile.getId()).subscribe(new DisposableMaybeObserver<Profile>() {
-            @Override
-            public void onSuccess(@io.reactivex.annotations.NonNull Profile profile) {
-                toggleLoading();
-                setFavIcon(true);
-            }
+        this.profileSaved = profileDao.findById(this.profile.getId());
 
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                toggleLoading();
-            }
-
-            @Override
-            public void onComplete() {
-                toggleLoading();
-            }
-        });
-
+        if(this.profileSaved != null){
+            isFav = true;
+            toggleLoading();
+            setFavIcon(true);
+        }else{
+            toggleLoading();
+        }
     }
 
     @Override
     public void onClick(View view) {
-        save();
+        markAsFavorite();
     }
 
     private void toggleLoading(){
 
-        int favVisibility = View.VISIBLE;
-        int loadingVisibility = View.GONE;
+        int favVisibility       = View.VISIBLE;
+        int loadingVisibility   = View.GONE;
 
         if(favButton.getVisibility() == favVisibility){
             favVisibility = View.INVISIBLE;
@@ -147,12 +132,33 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
         loadingIndicator.setVisibility(loadingVisibility);
     }
 
-    private void save(){
+    private void markAsFavorite(){
         toggleLoading();
+
+        if(!isFav){
+            // Save
+
+            this.profileDao.insert(this.profile);
+
+            this.profileSaved = this.profile;
+
+            isFav = true;
+
+            setFavIcon(true);
+
+            toggleLoading();
+            Toast.makeText(ProfileDetailActivity.this, "Marked as favorite!", Toast.LENGTH_SHORT).show();
+        }else{
+            this.profileDao.delete(this.profileSaved);
+            isFav = false;
+            setFavIcon(false);
+            toggleLoading();
+            // Remove
+            Toast.makeText(this, "Remove from favorite!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setFavIcon(boolean marked){
-
         if(marked){
             Drawable markedFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_fav).mutate();
 

@@ -18,7 +18,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getInstance(Context context){
         if(singleInstance == null){
-            singleInstance = Room.databaseBuilder(context, AppDatabase.class, "profiles-db").build();
+            singleInstance = Room.databaseBuilder(context, AppDatabase.class, "profiles-db").allowMainThreadQueries().build();
         }
 
         return singleInstance;
