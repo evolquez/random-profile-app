@@ -3,7 +3,9 @@ package com.example.randomprofile.view.activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +51,8 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
         favButton = activityProfileDetailBinding.favButton;
 
         favButton.setOnClickListener(this);
+
+        activityProfileDetailBinding.addContactButton.setOnClickListener(this);
 
         profileDao = AppDatabase.getInstance(this).profileDao();
 
@@ -115,7 +119,23 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        markAsFavorite();
+        if(view.getId() == R.id.favButton)
+            markAsFavorite();
+        else
+            addContact();
+    }
+
+    private void addContact() {
+        Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+
+        intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+
+        // Set default data
+        intent.putExtra(ContactsContract.Intents.Insert.PHONE, profile.getPhone());
+        intent.putExtra(ContactsContract.Intents.Insert.NAME, String.format(Locale.US, "%s %s", profile.getFirstName(), profile.getLastName()));
+        intent.putExtra(ContactsContract.Intents.Insert.EMAIL, profile.getEmail());
+
+        startActivity(intent);
     }
 
     private void toggleLoading(){
