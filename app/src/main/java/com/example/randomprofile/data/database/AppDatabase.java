@@ -12,13 +12,11 @@ import com.example.randomprofile.entity.Profile;
 @Database(entities = {Profile.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private AppDatabase singleInstance;
+    private static AppDatabase singleInstance;
 
     public abstract ProfileDao profileDao();
 
-
-    public AppDatabase get(Context context){
-
+    public static AppDatabase getInstance(Context context){
         if(singleInstance == null){
             singleInstance = Room.databaseBuilder(context, AppDatabase.class, "profiles-db").build();
         }
