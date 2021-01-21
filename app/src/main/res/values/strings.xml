@@ -5,4 +5,9 @@
     <string name="profile_picture">Profile picture</string>
     <string name="home_view_title">Home</string>
     <string name="detail_view_title">Profile details</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="age">Age</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
 </resources>

@@ -12,10 +12,101 @@
         android:layout_width="0dp"
         android:layout_height="170dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/placeholder" />
+
+    <ScrollView
+        android:id="@+id/infoContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:fillViewport="true"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileImage">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:divider="?android:listDivider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <LinearLayout style="@style/ProfileDetailFieldContainer">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/name" />
+
+                <TextView
+                    android:id="@+id/nameField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="Algenis Volquez" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ProfileDetailFieldContainer"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/emailField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="evolquez@gmail.com" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ProfileDetailFieldContainer"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/phoneField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="+1 (809) 777 7777" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ProfileDetailFieldContainer"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/age" />
+
+                <TextView
+                    android:id="@+id/ageField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="31" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ProfileDetailFieldContainer"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/address" />
+
+                <TextView
+                    android:id="@+id/addressField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="Santo Domingo, Distrito Nacional, Dominican Republic" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
