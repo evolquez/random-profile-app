@@ -18,6 +18,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/placeholder" />
 
+    <ImageView
+        android:id="@+id/favButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_fav"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/infoContainer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
     <ScrollView
         android:id="@+id/infoContainer"
         android:layout_width="0dp"
@@ -29,12 +41,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileImage">
+        app:layout_constraintTop_toBottomOf="@id/favButton">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:divider="?android:listDivider"
             android:orientation="vertical"
             android:showDividers="middle">

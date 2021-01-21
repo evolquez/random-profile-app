@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,8 +42,10 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
         setContentView(view);
 
-        if(getSupportActionBar() != null)
+        if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.home_view_title));
+        }
+
 
         // Initialize recyclerview component
         this.initialize();

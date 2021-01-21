@@ -1,12 +1,16 @@
 package com.example.randomprofile.view.activity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.randomprofile.R;
 import com.example.randomprofile.config.Constants;
@@ -17,9 +21,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
-public class ProfileDetailActivity extends AppCompatActivity {
+public class ProfileDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityProfileDetailBinding activityProfileDetailBinding;
+    private boolean isFav;
+    private Drawable defaultFavIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,11 @@ public class ProfileDetailActivity extends AppCompatActivity {
 
         View view = activityProfileDetailBinding.getRoot();
 
+        defaultFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_fav);
+
         setContentView(view);
+
+        activityProfileDetailBinding.favButton.setOnClickListener(this);
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.detail_view_title));
@@ -68,6 +78,29 @@ public class ProfileDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        save();
+    }
+
+    private void save(){
+
+        if(!this.isFav){
+            // Save
+            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+
+            Drawable markedFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_fav).mutate();
+            markedFavIcon.setColorFilter(ContextCompat.getColor(this, R.color.green_1), PorterDuff.Mode.SRC_ATOP);
+            activityProfileDetailBinding.favButton.setImageDrawable(markedFavIcon);
+            this.isFav = true;
+        }else{
+            Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
+            this.isFav = false;
+            // Remove
+            activityProfileDetailBinding.favButton.getDrawable().setColorFilter(null);
+        }
     }
 
     private String getAddress(Location location){
