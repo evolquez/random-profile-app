@@ -1,6 +1,8 @@
 package com.example.randomprofile.domain.entity;
 
-public class Profile {
+import java.io.Serializable;
+
+public class Profile implements Serializable {
     private String gender;
     private Name name;
     private Location location;

@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profileImage"
-    android:layout_width="64dp"
-    android:layout_height="64dp"
-    android:scaleType="fitXY"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:scaleType="centerCrop"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginVertical="5dp"
     android:contentDescription="@string/profile_picture"
     tools:src="@drawable/placeholder" />

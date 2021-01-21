@@ -1,8 +1,9 @@
 package com.example.randomprofile.domain.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Dob {
+public class Dob implements Serializable {
     private Date date;
     private int age;
 

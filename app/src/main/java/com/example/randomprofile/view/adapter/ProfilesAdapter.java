@@ -19,10 +19,12 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<Profile> profiles;
     private Context context;
+    private OnProfileClickHandler onProfileClickHandler;
 
-    public ProfilesAdapter(List<Profile> profiles, Context context) {
+    public ProfilesAdapter(List<Profile> profiles, Context context, OnProfileClickHandler onProfileClickHandler) {
         this.profiles = profiles;
         this.context = context;
+        this.onProfileClickHandler = onProfileClickHandler;
     }
 
     public void setProfiles(List<Profile> profiles) {
@@ -41,6 +43,9 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Profile profile = profiles.get(position);
 
         Holder h = (Holder) holder;
+
+        h.bind(profile);
+
         Picasso.get().load(profile.getPicture().getThumbnail()).into(h.profileImage);
     }
 
@@ -57,5 +62,13 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             profileImage = itemView.findViewById(R.id.profileImage);
         }
+
+        private void bind(Profile profile){
+            itemView.setOnClickListener(v -> onProfileClickHandler.onProfileClicked(profile));
+        }
+    }
+
+    public interface OnProfileClickHandler{
+        void onProfileClicked(Profile profile);
     }
 }

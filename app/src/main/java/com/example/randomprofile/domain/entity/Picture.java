@@ -1,6 +1,8 @@
 package com.example.randomprofile.domain.entity;
 
-public class Picture {
+import java.io.Serializable;
+
+public class Picture implements Serializable {
     private String large;
     private String medium;
     private String thumbnail;

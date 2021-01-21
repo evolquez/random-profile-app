@@ -1,6 +1,8 @@
 package com.example.randomprofile.domain.entity;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
 
     private Street street;
     private String city;

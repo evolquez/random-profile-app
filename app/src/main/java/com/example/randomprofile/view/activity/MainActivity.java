@@ -1,5 +1,6 @@
 package com.example.randomprofile.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.randomprofile.R;
+import com.example.randomprofile.config.Constants;
 import com.example.randomprofile.data.service.ProfilesService;
 import com.example.randomprofile.data.service.RetrofitBuilder;
 import com.example.randomprofile.databinding.ActivityMainBinding;
@@ -21,7 +24,7 @@ import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements ProfilesSubscriber.OnServiceProfileListener {
+public class MainActivity extends AppCompatActivity implements ProfilesSubscriber.OnServiceProfileListener, ProfilesAdapter.OnProfileClickHandler {
 
     private ActivityMainBinding activityMainBinding;
 
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         setContentView(view);
 
         if(getSupportActionBar() != null)
-            getSupportActionBar().setTitle("Home");
+            getSupportActionBar().setTitle(getString(R.string.home_view_title));
 
         // Initialize recyclerview component
         this.initialize();
@@ -51,11 +54,12 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         RecyclerView recyclerView = activityMainBinding.gridProfiles;
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 6));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
 
-        this.profilesAdapter = new ProfilesAdapter(new ArrayList<>(), this);
+        this.profilesAdapter = new ProfilesAdapter(new ArrayList<>(), this, this);
 
         recyclerView.setAdapter(profilesAdapter);
+
     }
 
     private void loadProfiles(){
@@ -79,5 +83,13 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     @Override
     public void onLoadError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onProfileClicked(Profile profile) {
+        Intent i = new Intent(this, ProfileDetailActivity.class);
+        i.putExtra(Constants.PROFILE, profile);
+
+        startActivity(i);
     }
 }
