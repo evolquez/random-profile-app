@@ -16,7 +16,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/placeholder" />
+        tools:src="@drawable/placeholder"
+        android:contentDescription="@string/content_image" />
 
     <ImageView
         android:id="@+id/favButton"
@@ -25,10 +26,11 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_fav"
         android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@id/infoContainer"
+        app:layout_constraintBottom_toTopOf="@+id/infoContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        android:contentDescription="@string/content_image" />
 
     <ScrollView
         android:id="@+id/infoContainer"
@@ -51,6 +53,20 @@
             android:showDividers="middle">
 
             <LinearLayout style="@style/ProfileDetailFieldContainer">
+
+                <TextView
+                    style="@style/ProfileDetailFieldLabel"
+                    android:text="@string/dni" />
+
+                <TextView
+                    android:id="@+id/dniField"
+                    style="@style/ProfileDetailFieldText"
+                    tools:text="077-0000000-0" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ProfileDetailFieldContainer"
+                android:layout_marginTop="15dp">
 
                 <TextView
                     style="@style/ProfileDetailFieldLabel"

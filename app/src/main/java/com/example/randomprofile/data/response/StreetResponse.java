@@ -1,13 +1,13 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 
-public class Street implements Serializable {
+public class StreetResponse implements Serializable {
 
     private int number;
     private String name;
 
-    public Street(int number, String name){
+    public StreetResponse(int number, String name){
 
         this.number = number;
         this.name   = name;

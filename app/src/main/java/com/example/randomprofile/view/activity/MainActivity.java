@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +14,7 @@ import com.example.randomprofile.config.Constants;
 import com.example.randomprofile.data.service.ProfilesService;
 import com.example.randomprofile.data.service.RetrofitBuilder;
 import com.example.randomprofile.databinding.ActivityMainBinding;
-import com.example.randomprofile.domain.entity.Profile;
+import com.example.randomprofile.entity.Profile;
 import com.example.randomprofile.view.adapter.ProfilesAdapter;
 import com.example.randomprofile.view.subscriber.ProfilesSubscriber;
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.home_view_title));
         }
-
 
         // Initialize recyclerview component
         this.initialize();

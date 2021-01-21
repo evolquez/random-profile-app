@@ -1,12 +1,12 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 
-public class Timezone implements Serializable {
+public class TimezoneResponse implements Serializable {
     private String offset;
     private String description;
 
-    public Timezone(String offset, String description) {
+    public TimezoneResponse(String offset, String description) {
         this.offset = offset;
         this.description = description;
     }

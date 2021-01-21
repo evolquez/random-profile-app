@@ -1,8 +1,8 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 
-public class Login implements Serializable {
+public class LoginResponse implements Serializable {
     private String uuid;
     private String username;
     private String password;
@@ -11,7 +11,7 @@ public class Login implements Serializable {
     private String sha1;
     private String sha256;
 
-    public Login(String uuid, String username, String password, String salt, String md5, String sha1, String sha256) {
+    public LoginResponse(String uuid, String username, String password, String salt, String md5, String sha1, String sha256) {
         this.uuid = uuid;
         this.username = username;
         this.password = password;

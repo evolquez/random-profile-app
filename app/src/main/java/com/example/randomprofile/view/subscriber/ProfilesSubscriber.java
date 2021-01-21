@@ -1,7 +1,8 @@
 package com.example.randomprofile.view.subscriber;
 
+import com.example.randomprofile.data.ProfileFactory;
 import com.example.randomprofile.data.response.ProfilesResponse;
-import com.example.randomprofile.domain.entity.Profile;
+import com.example.randomprofile.entity.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +12,10 @@ import rx.Subscriber;
 public class ProfilesSubscriber extends Subscriber<ProfilesResponse> {
 
     private List<Profile> profiles;
-    private OnServiceProfileListener onServiceProfileListener;
+    private ProfilesResponse profileResponses;
+    private final OnServiceProfileListener onServiceProfileListener;
 
     public ProfilesSubscriber(OnServiceProfileListener onServiceProfileListener) {
-        this.profiles = profiles;
         this.onServiceProfileListener = onServiceProfileListener;
     }
 
@@ -26,6 +27,9 @@ public class ProfilesSubscriber extends Subscriber<ProfilesResponse> {
 
     @Override
     public void onCompleted() {
+
+        this.profiles = ProfileFactory.getInstance().prepareFromResponse(this.profileResponses);
+
         this.onServiceProfileListener.onLoadCompleted(this.profiles);
     }
 
@@ -36,7 +40,7 @@ public class ProfilesSubscriber extends Subscriber<ProfilesResponse> {
 
     @Override
     public void onNext(ProfilesResponse profilesResponse) {
-        this.profiles = profilesResponse.getProfiles();
+        this.profileResponses = profilesResponse;
     }
 
     public interface OnServiceProfileListener{

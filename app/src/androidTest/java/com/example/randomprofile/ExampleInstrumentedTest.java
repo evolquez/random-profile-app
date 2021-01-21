@@ -1,19 +1,12 @@
 package com.example.randomprofile;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.randomprofile.data.response.Profile;
-import com.example.randomprofile.data.service.ProfilesService;
-import com.example.randomprofile.data.service.RetrofitBuilder;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import rx.Subscriber;
 
 import static org.junit.Assert.*;
 

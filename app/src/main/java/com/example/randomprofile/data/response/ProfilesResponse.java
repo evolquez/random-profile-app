@@ -1,6 +1,5 @@
 package com.example.randomprofile.data.response;
 
-import com.example.randomprofile.domain.entity.Profile;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,17 +7,17 @@ import java.util.List;
 public class ProfilesResponse {
 
     @SerializedName("results")
-    private List<Profile> profiles;
+    private List<ProfileResponse> profileResponses;
 
-    public ProfilesResponse(List<Profile> profiles) {
-        this.profiles = profiles;
+    public ProfilesResponse(List<ProfileResponse> profileResponses) {
+        this.profileResponses = profileResponses;
     }
 
-    public List<Profile> getProfiles() {
-        return profiles;
+    public List<ProfileResponse> getProfileResponses() {
+        return profileResponses;
     }
 
-    public void setProfiles(List<Profile> profiles) {
-        this.profiles = profiles;
+    public void setProfileResponses(List<ProfileResponse> profileResponses) {
+        this.profileResponses = profileResponses;
     }
 }

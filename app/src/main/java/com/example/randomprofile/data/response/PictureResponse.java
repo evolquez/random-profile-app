@@ -1,13 +1,13 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 
-public class Picture implements Serializable {
+public class PictureResponse implements Serializable {
     private String large;
     private String medium;
     private String thumbnail;
 
-    public Picture(String large, String medium, String thumbnail) {
+    public PictureResponse(String large, String medium, String thumbnail) {
         this.large = large;
         this.medium = medium;
         this.thumbnail = thumbnail;

@@ -15,8 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.example.randomprofile.R;
 import com.example.randomprofile.config.Constants;
 import com.example.randomprofile.databinding.ActivityProfileDetailBinding;
-import com.example.randomprofile.domain.entity.Location;
-import com.example.randomprofile.domain.entity.Profile;
+import com.example.randomprofile.entity.Profile;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -25,7 +24,6 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
 
     private ActivityProfileDetailBinding activityProfileDetailBinding;
     private boolean isFav;
-    private Drawable defaultFavIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +33,6 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
         activityProfileDetailBinding = ActivityProfileDetailBinding.inflate(getLayoutInflater());
 
         View view = activityProfileDetailBinding.getRoot();
-
-        defaultFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_fav);
 
         setContentView(view);
 
@@ -52,23 +48,26 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
 
         Profile profile = (Profile) i.getSerializableExtra(Constants.PROFILE);
 
-        initializeData(profile);
+        if(profile != null)
+            initializeData(profile);
     }
 
     private void initializeData(Profile profile){
 
-        Picasso.get().load(profile.getPicture().getLarge()).into(activityProfileDetailBinding.profileImage);
 
+        Picasso.get().load(profile.getLargeImage()).into(activityProfileDetailBinding.profileImage);
+
+        activityProfileDetailBinding.dniField.setText(profile.getId());
         activityProfileDetailBinding.nameField.setText(String.format(Locale.US, "%s %s",
-                profile.getName().getFirst(), profile.getName().getLast()));
+                profile.getFirstName(), profile.getLastName()));
 
         activityProfileDetailBinding.emailField.setText(profile.getEmail());
 
         activityProfileDetailBinding.phoneField.setText(profile.getPhone());
 
-        activityProfileDetailBinding.ageField.setText(String.valueOf(profile.getDob().getAge()));
+        activityProfileDetailBinding.ageField.setText(String.valueOf(profile.getAge()));
 
-        activityProfileDetailBinding.addressField.setText(getAddress(profile.getLocation()));
+        activityProfileDetailBinding.addressField.setText(profile.getAddress());
     }
 
     @Override
@@ -101,12 +100,5 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
             // Remove
             activityProfileDetailBinding.favButton.getDrawable().setColorFilter(null);
         }
-    }
-
-    private String getAddress(Location location){
-        final String addressFormat = "%s %d, %s, %s, %s";
-
-        return String.format(Locale.US, addressFormat, location.getStreet().getName(),
-                location.getStreet().getNumber(), location.getCity(), location.getState(), location.getCountry());
     }
 }

@@ -38,8 +38,8 @@ public class ExampleUnitTest {
 
             @Override
             public void onNext(ProfilesResponse profilesResponse) {
-                System.out.println("SIZE: "+ profilesResponse.getProfiles().size());
-                assertTrue(profilesResponse.getProfiles().size() > 0);
+                System.out.println("SIZE: "+ profilesResponse.getProfileResponses().size());
+                assertTrue(profilesResponse.getProfileResponses().size() > 0);
             }
         });
     }

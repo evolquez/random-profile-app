@@ -1,13 +1,13 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 
-public class Coordinates implements Serializable {
+public class CoordinatesResponse implements Serializable {
 
     private String latitude;
     private String longitude;
 
-    public Coordinates(String latitude, String longitude) {
+    public CoordinatesResponse(String latitude, String longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

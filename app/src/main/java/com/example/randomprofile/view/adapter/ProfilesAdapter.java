@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.randomprofile.R;
-import com.example.randomprofile.domain.entity.Profile;
+import com.example.randomprofile.entity.Profile;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,8 +18,8 @@ import java.util.List;
 public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<Profile> profiles;
-    private Context context;
-    private OnProfileClickHandler onProfileClickHandler;
+    private final Context context;
+    private final OnProfileClickHandler onProfileClickHandler;
 
     public ProfilesAdapter(List<Profile> profiles, Context context, OnProfileClickHandler onProfileClickHandler) {
         this.profiles = profiles;
@@ -46,7 +46,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         h.bind(profile);
 
-        Picasso.get().load(profile.getPicture().getThumbnail()).into(h.profileImage);
+        Picasso.get().load(profile.getThumbnailImage()).into(h.profileImage);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class Holder extends RecyclerView.ViewHolder{
 
-        private ImageView profileImage;
+        private final ImageView profileImage;
 
         private Holder(View itemView) {
             super(itemView);

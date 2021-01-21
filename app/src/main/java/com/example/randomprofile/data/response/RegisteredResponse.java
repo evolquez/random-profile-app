@@ -1,13 +1,14 @@
-package com.example.randomprofile.domain.entity;
+package com.example.randomprofile.data.response;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class Dob implements Serializable {
+public class RegisteredResponse implements Serializable {
+
     private Date date;
     private int age;
 
-    public Dob(Date date, int age) {
+    public RegisteredResponse(Date date, int age) {
         this.date = date;
         this.age = age;
     }
