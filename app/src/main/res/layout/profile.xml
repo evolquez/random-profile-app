@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profileImage"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:scaleType="fitXY"
+    android:contentDescription="@string/profile_picture"
+    tools:src="@drawable/placeholder" />

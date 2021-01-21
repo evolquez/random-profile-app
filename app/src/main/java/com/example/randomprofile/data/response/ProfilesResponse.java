@@ -1,5 +1,6 @@
 package com.example.randomprofile.data.response;
 
+import com.example.randomprofile.domain.entity.Profile;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

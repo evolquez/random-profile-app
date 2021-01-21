@@ -1,4 +1,4 @@
-package com.example.randomprofile.data.response;
+package com.example.randomprofile.domain.entity;
 
 public class Id {
     private String name;
