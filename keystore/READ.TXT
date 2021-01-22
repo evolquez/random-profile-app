@@ -1,0 +1,5 @@
+keystore alias
+randomuserapp
+
+keystore passwd
+@secret
