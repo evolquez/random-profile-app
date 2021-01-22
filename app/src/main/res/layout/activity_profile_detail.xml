@@ -32,7 +32,7 @@
             android:id="@+id/favButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_fav"
+            android:src="@drawable/ic_bookmark"
             android:clickable="true"
             android:contentDescription="@string/content_image" />
 

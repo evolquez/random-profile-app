@@ -28,6 +28,10 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onProfileClickHandler = onProfileClickHandler;
     }
 
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
+
     public void setProfiles(List<Profile> profiles, boolean addMore) {
         if(!addMore){
             this.profiles = profiles;

@@ -15,4 +15,5 @@
     <string name="add_contact">Add Contact</string>
     <string name="random_profiles">Random profiles</string>
     <string name="favorites">Favorites</string>
+    <string name="search_profile_by_name">Search profile by name</string>
 </resources>

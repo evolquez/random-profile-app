@@ -21,16 +21,25 @@ import com.example.randomprofile.databinding.ActivityMainBinding;
 import com.example.randomprofile.entity.Profile;
 import com.example.randomprofile.view.adapter.ProfilesAdapter;
 import com.example.randomprofile.view.listener.ScrollListener;
+import com.example.randomprofile.view.subscriber.ProfilesFilterSubscriber;
 import com.example.randomprofile.view.subscriber.ProfilesSubscriber;
+import com.example.randomprofile.view.subscriber.TextChangeSubscriber;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements ProfilesSubscriber.OnServiceProfileListener,
-        ProfilesAdapter.OnProfileClickHandler, ScrollListener.OnScrollEndListener {
+        ProfilesAdapter.OnProfileClickHandler, ScrollListener.OnScrollEndListener,
+        TextChangeSubscriber.OnTextChangeListener, ProfilesFilterSubscriber.OnProfileFilterListener {
 
     private ActivityMainBinding activityMainBinding;
 
@@ -40,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     private ProfileDao profileDao;
     private ProfilesService service;
     private Boolean firstLoad;
+    private List<Profile> filteredProfiles;
+    private List<Profile> profilesLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +65,16 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
         profileDao = AppDatabase.getInstance(this).profileDao();
 
+        filteredProfiles = new ArrayList<>();
+        profilesLoaded = new ArrayList<>();
+
         loadingProfileIndicator = activityMainBinding.loadingProfileIndicator;
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.home_view_title));
         }
+
+        initFilterListener();
 
         // Initialize recyclerview component
         this.initialize();
@@ -67,6 +83,16 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         loadingProfileIndicator.setVisibility(View.VISIBLE);
         this.firstLoad = true;
         this.loadProfiles();
+    }
+
+    private void initFilterListener() {
+        RxTextView
+                .textChangeEvents(activityMainBinding.filterField)
+                .skip(1)
+                .debounce(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .flatMap((Func1<TextViewTextChangeEvent, Observable<String>>)
+                        textViewTextChangeEvent -> Observable.just(textViewTextChangeEvent.text().toString()))
+                .subscribe(new TextChangeSubscriber(this));
     }
 
     private void initialize() {
@@ -121,7 +147,14 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     @Override
     public void onLoadCompleted(List<Profile> profiles) {
 
+        if(firstLoad){
+            this.profilesLoaded = profiles;
+        }else{
+            this.profilesLoaded.addAll(profiles);
+        }
+
         this.profilesAdapter.setProfiles(profiles, !firstLoad);
+
         this.profilesAdapter.notifyDataSetChanged();
 
         if(firstLoad){
@@ -148,12 +181,39 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
     @Override
     public void onScrollEnd() {
-
-        loadProfiles();
+        if(this.filteredProfiles.size() == 0)
+            loadProfiles();
     }
 
     @Override
     public int getProfilesCount() {
-        return this.profilesAdapter.getItemCount();
+        return this.profilesLoaded.size();
+    }
+
+    @Override
+    public void emitTextFromSearchBox(String s) {
+        if(!s.equals("")){
+            Observable
+                    .from(this.profilesLoaded)
+                    .filter(profile -> profile.getFirstName().toLowerCase().contains(s.toLowerCase()))
+                    .subscribe(new ProfilesFilterSubscriber(MainActivity.this));
+        }else{
+            this.filteredProfiles.clear();
+            this.profilesAdapter.setProfiles(this.profilesLoaded, false);
+            this.profilesAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public List<Profile> getFilteredList() {
+        return this.filteredProfiles;
+    }
+
+    @Override
+    public void onFilteredCompleted() {
+
+        this.profilesAdapter.setProfiles(this.filteredProfiles, false);
+        this.profilesAdapter.notifyDataSetChanged();
     }
 }

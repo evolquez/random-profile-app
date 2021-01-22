@@ -179,7 +179,7 @@ public class ProfileDetailActivity extends AppCompatActivity implements View.OnC
 
     private void setFavIcon(boolean marked){
         if(marked){
-            Drawable markedFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_fav).mutate();
+            Drawable markedFavIcon = ContextCompat.getDrawable(this, R.drawable.ic_bookmark).mutate();
 
             markedFavIcon.setColorFilter(ContextCompat.getColor(this, R.color.green_1), PorterDuff.Mode.SRC_ATOP);
             activityProfileDetailBinding.favButton.setImageDrawable(markedFavIcon);
