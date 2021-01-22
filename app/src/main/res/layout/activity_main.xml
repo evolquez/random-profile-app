@@ -50,20 +50,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/favoritesContainer" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/filterField"
         style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:completionThreshold="1"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
+        android:maxLines="1"
         android:hint="@string/search_profile_by_name"
+        android:completionHint="Suggested profiles"
         android:paddingHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textProfiles"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@id/textProfiles"/>
 
     <FrameLayout
         android:layout_width="0dp"

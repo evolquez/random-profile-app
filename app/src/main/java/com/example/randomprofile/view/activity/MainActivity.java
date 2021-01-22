@@ -3,6 +3,8 @@ package com.example.randomprofile.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.randomprofile.data.service.RetrofitBuilder;
 import com.example.randomprofile.databinding.ActivityMainBinding;
 import com.example.randomprofile.entity.Profile;
 import com.example.randomprofile.view.adapter.ProfilesAdapter;
+import com.example.randomprofile.view.adapter.SuggestionsAdapter;
 import com.example.randomprofile.view.listener.ScrollListener;
 import com.example.randomprofile.view.subscriber.ProfilesFilterSubscriber;
 import com.example.randomprofile.view.subscriber.ProfilesSubscriber;
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     private Boolean firstLoad;
     private List<Profile> filteredProfiles;
     private List<Profile> profilesLoaded;
+    private List<Profile> allFavorites;
+    private SuggestionsAdapter suggestionsAdapter;
+    private AutoCompleteTextView filterField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +75,13 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
         loadingProfileIndicator = activityMainBinding.loadingProfileIndicator;
 
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(getString(R.string.home_view_title));
         }
 
-        initFilterListener();
+        initFilterField();
+
 
         // Initialize recyclerview component
         this.initialize();
@@ -84,9 +92,20 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         this.loadProfiles();
     }
 
+    private void initFilterField() {
+
+        filterField = activityMainBinding.filterField;
+        filterField.setThreshold(1);
+
+        this.suggestionsAdapter = new SuggestionsAdapter(this, new ArrayList<>(), this);
+        filterField.setAdapter(suggestionsAdapter);
+
+        initFilterListener();
+    }
+
     private void initFilterListener() {
         RxTextView
-                .textChangeEvents(activityMainBinding.filterField)
+                .textChangeEvents(filterField)
                 .skip(1)
                 .debounce(200, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 .flatMap((Func1<TextViewTextChangeEvent, Observable<String>>)
@@ -137,16 +156,19 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
     private void loadFavorites(){
 
-        List<Profile> allFavorites = this.profileDao.getAll();
+        allFavorites = this.profileDao.getAll();
+
+        this.suggestionsAdapter.setProfiles(allFavorites);
+        this.suggestionsAdapter.notifyDataSetChanged();
 
         if(allFavorites.size() > 0){
-
             activityMainBinding.favoritesContainer.setVisibility(View.VISIBLE);
             this.favoritesAdapter.setProfiles(allFavorites, false);
         }else{
             activityMainBinding.favoritesContainer.setVisibility(View.GONE);
             this.favoritesAdapter.setProfiles(new ArrayList<>(), false);
         }
+
         this.favoritesAdapter.notifyDataSetChanged();
     }
 
