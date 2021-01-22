@@ -20,6 +20,7 @@ import com.example.randomprofile.data.service.RetrofitBuilder;
 import com.example.randomprofile.databinding.ActivityMainBinding;
 import com.example.randomprofile.entity.Profile;
 import com.example.randomprofile.view.adapter.ProfilesAdapter;
+import com.example.randomprofile.view.listener.ScrollListener;
 import com.example.randomprofile.view.subscriber.ProfilesSubscriber;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements ProfilesSubscriber.OnServiceProfileListener, ProfilesAdapter.OnProfileClickHandler {
+public class MainActivity extends AppCompatActivity implements ProfilesSubscriber.OnServiceProfileListener,
+        ProfilesAdapter.OnProfileClickHandler, ScrollListener.OnScrollEndListener {
 
     private ActivityMainBinding activityMainBinding;
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     private ProfilesAdapter favoritesAdapter;
     private ProgressBar loadingProfileIndicator;
     private ProfileDao profileDao;
+    private ProfilesService service;
+    private Boolean firstLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         // Initialize recyclerview component
         this.initialize();
 
+        service = RetrofitBuilder.getInstance().getRetrofit().create(ProfilesService.class);
+        loadingProfileIndicator.setVisibility(View.VISIBLE);
+        this.firstLoad = true;
         this.loadProfiles();
     }
 
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         this.profilesAdapter = new ProfilesAdapter(new ArrayList<>(), this, this);
 
         rvProfiles.setAdapter(profilesAdapter);
+        rvProfiles.addOnScrollListener(new ScrollListener(this));
 
         rvFavorites.setHasFixedSize(true);
         rvFavorites.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -83,15 +91,10 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     }
 
     private void loadProfiles(){
-        loadingProfileIndicator.setVisibility(View.VISIBLE);
-        ProfilesService service = RetrofitBuilder.getInstance().getRetrofit().create(ProfilesService.class);
-
-        ProfilesSubscriber subscriber = new ProfilesSubscriber(this);
-
         service.getProfiles()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+                .subscribe(new ProfilesSubscriber(this));
     }
 
     @Override
@@ -107,25 +110,31 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         if(allFavorites.size() > 0){
 
             activityMainBinding.favoritesContainer.setVisibility(View.VISIBLE);
-            this.favoritesAdapter.setProfiles(allFavorites);
-            this.favoritesAdapter.notifyDataSetChanged();
+            this.favoritesAdapter.setProfiles(allFavorites, false);
         }else{
             activityMainBinding.favoritesContainer.setVisibility(View.GONE);
-            this.favoritesAdapter.setProfiles(new ArrayList<>());
-            this.favoritesAdapter.notifyDataSetChanged();
+            this.favoritesAdapter.setProfiles(new ArrayList<>(), false);
         }
+        this.favoritesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoadCompleted(List<Profile> profiles) {
-        loadingProfileIndicator.setVisibility(View.GONE);
-        this.profilesAdapter.setProfiles(profiles);
+
+        this.profilesAdapter.setProfiles(profiles, !firstLoad);
         this.profilesAdapter.notifyDataSetChanged();
+
+        if(firstLoad){
+            loadingProfileIndicator.setVisibility(View.GONE);
+            firstLoad = false;
+        }
     }
 
     @Override
     public void onLoadError(String error) {
-        loadingProfileIndicator.setVisibility(View.GONE);
+        if(this.firstLoad)
+            loadingProfileIndicator.setVisibility(View.GONE);
+
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
@@ -135,5 +144,16 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
         i.putExtra(Constants.PROFILE, profile);
 
         startActivity(i);
+    }
+
+    @Override
+    public void onScrollEnd() {
+
+        loadProfiles();
+    }
+
+    @Override
+    public int getProfilesCount() {
+        return this.profilesAdapter.getItemCount();
     }
 }
