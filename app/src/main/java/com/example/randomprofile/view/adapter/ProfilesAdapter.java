@@ -55,7 +55,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         h.bind(profile);
 
-        Picasso.get().load(profile.getThumbnailImage()).into(h.getProfileImage());
+        Picasso.get().load(profile.getLargeImage()).into(h.getProfileImage());
     }
 
     @Override
