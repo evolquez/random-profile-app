@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.randomprofile.R;
 import com.example.randomprofile.entity.Profile;
+import com.example.randomprofile.view.holder.ProfileViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -35,37 +36,23 @@ public class ProfilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.profile, parent, false);
-        return new Holder(view);
+        return new ProfileViewHolder(view, onProfileClickHandler);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Profile profile = profiles.get(position);
 
-        Holder h = (Holder) holder;
+        ProfileViewHolder h = (ProfileViewHolder) holder;
 
         h.bind(profile);
 
-        Picasso.get().load(profile.getThumbnailImage()).into(h.profileImage);
+        Picasso.get().load(profile.getThumbnailImage()).into(h.getProfileImage());
     }
 
     @Override
     public int getItemCount() {
         return profiles.size();
-    }
-
-    private class Holder extends RecyclerView.ViewHolder{
-
-        private final ImageView profileImage;
-
-        private Holder(View itemView) {
-            super(itemView);
-            profileImage = itemView.findViewById(R.id.profileImage);
-        }
-
-        private void bind(Profile profile){
-            itemView.setOnClickListener(v -> onProfileClickHandler.onProfileClicked(profile));
-        }
     }
 
     public interface OnProfileClickHandler{

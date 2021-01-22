@@ -13,4 +13,6 @@
     <string name="content_image">Content image</string>
     <string name="dni">DNI</string>
     <string name="add_contact">Add Contact</string>
+    <string name="random_profiles">Random profiles</string>
+    <string name="favorites">Favorites</string>
 </resources>
