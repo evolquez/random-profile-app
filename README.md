@@ -1,7 +1,7 @@
 # Random Profile APP
 
 ## Main Goal
-- Create an Android app using the Random User API.
+- Create an Android app using the [Random User API.](https://randomuser.me/documentation)
 
 ## Functional Requirements
  - Must have a grid list showing at least 50 profile image thumbnails per page.
