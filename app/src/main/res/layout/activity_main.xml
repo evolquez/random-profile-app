@@ -81,6 +81,15 @@
             android:id="@+id/gridProfiles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/reload"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:clickable="true"
+            android:src="@drawable/ic_refresh"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
         <ProgressBar
             android:id="@+id/loadingProfileIndicator"
             android:layout_width="wrap_content"

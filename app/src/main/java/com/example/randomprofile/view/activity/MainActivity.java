@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -96,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     }
 
     private void initialize() {
+
+        activityMainBinding.reload.setOnClickListener(view -> {
+            view.setVisibility(View.GONE);
+            loadingProfileIndicator.setVisibility(View.VISIBLE);
+            loadProfiles();
+        });
+
         RecyclerView rvProfiles = activityMainBinding.gridProfiles;
         RecyclerView rvFavorites = activityMainBinding.gridFavorites;
 
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
     public void onLoadCompleted(List<Profile> profiles) {
 
         if(firstLoad){
+            activityMainBinding.reload.setVisibility(View.GONE);
             this.profilesLoaded = profiles;
         }else{
             this.profilesLoaded.addAll(profiles);
@@ -165,9 +172,10 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
 
     @Override
     public void onLoadError(String error) {
-        if(this.firstLoad)
+        if(this.firstLoad){
             loadingProfileIndicator.setVisibility(View.GONE);
-
+            activityMainBinding.reload.setVisibility(View.VISIBLE);
+        }
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
@@ -202,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements ProfilesSubscribe
             this.profilesAdapter.setProfiles(this.profilesLoaded, false);
             this.profilesAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
